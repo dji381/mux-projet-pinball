@@ -2,12 +2,16 @@ public class Balle extends Figure {
 
   CircleShape balle;
   float balleW,w;
-  public Balle (int posX, int posY, BodyType bt) {
-    super(posX, posY, bt);
+  PImage img;
+  public Balle (int posX, int posY) {
+    super(posX, posY, BodyType.DYNAMIC);
+    c = color(255,0,0);
+    img = loadImage("pokeball.png");
     createBody();
+    
   }
   void createBody() {
-    w=10;
+    w=25;
     // Setting an arbitrary initial velocity
     body.setLinearVelocity(new Vec2(0, 0));
     // Setting an arbitrary initial angular velocity
@@ -25,6 +29,8 @@ public class Balle extends Figure {
     fd.density = 1.0;
     // Creates the Fixture and attaches the Shape to the Body object
     body.createFixture(fd);
+    //reference to this Particle that we can access later.
+    body.setUserData(this);
   }
   void display() {
     //get the position of the body
@@ -36,13 +42,16 @@ public class Balle extends Figure {
     // Using the Vec2 position and float angle to translate and rotate the rectangle
     translate(position.x, position.y);
     rotate(-a);
-    //[end]
-    fill(255,0,0);
-    stroke(0);
-    circle(0, 0, w);
+    image(img,0-w/2,0-w/2,w+1,w+1);
     popMatrix();
   }
   void killBody() {
     box2d.destroyBody(body);
+  }
+   void bumpAway(float amount, Vec2 normal)
+  {
+    normal.normalize();
+    Vec2 pushForce = normal.mul(-amount);
+    this.body.applyLinearImpulse(pushForce, this.body.getPosition(), true);
   }
 }

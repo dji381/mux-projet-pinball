@@ -8,6 +8,8 @@ abstract class Figure {
   Body body;
   //fixture
   FixtureDef fd;
+  //couleur de la forme
+  color c;
   public Figure(int posX, int posY, BodyType bt) {
     //definition et positionnement initial du corps
     bd = new BodyDef();
