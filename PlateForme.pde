@@ -26,7 +26,9 @@ public class PlateForme extends Figure {
   }
   void setColor (color c){
     this.c = c;
+    fill(c);
   }
+
   void display() {
     // On utilise la position et l'angle du corps pour placer l'objet 
     float a = body.getAngle();
@@ -34,7 +36,7 @@ public class PlateForme extends Figure {
     pushMatrix();
     translate(position.x, position.y);
     rotate(-a);
-    fill(c);
+    //fill(c);
     noStroke();
     rectMode(CENTER);
     rect(0,0,w,h);

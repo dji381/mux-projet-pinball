@@ -46,7 +46,7 @@ class Surface {
   }
   void display() {
     strokeWeight(1);
-    stroke(0);
+    noStroke();
     noFill();
     //dessiner le ChainShape comme des series de vertices.
     beginShape();

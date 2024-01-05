@@ -12,9 +12,11 @@ Box2DProcessing box2d;
 ArrayList<Balle>balles;
 ArrayList<Flipper> flippers;
 ArrayList<PlateForme> plateFormes;
+ArrayList<Colline> collines;
 Surface surface;
-PlateForme pt;
-
+Colline collineDroite;
+Colline collineGauche;
+Lanceur lanceur;
 PImage img;
 void setup() {
 
@@ -29,29 +31,39 @@ void setup() {
   // Start listening for collisions
   //box2d.listenForCollisions();
   balles = new ArrayList<>();
-  balles.add(new Balle(width/2, height/2));
+  balles.add(new Balle(width-25, height-150));
   //flippers
   flippers = new ArrayList<>();
-  flippers.add(new Flipper(125, height-100, BodyType.DYNAMIC, 80, 25, true));
-  flippers.add(new Flipper(width-150, height-100, BodyType.DYNAMIC, 80, 25, false));
+  flippers.add(new Flipper(125, height-100, 80, 25, true));
+  flippers.add(new Flipper(width-150, height-100, 80, 25, false));
   surface = new Surface();
   //image
   img = loadImage("background.png");
   //plateformes
   plateFormes = new ArrayList<>();
-  plateFormes.add(new PlateForme(width/2, height/2+100, BodyType.STATIC, 150, 10));
-  plateFormes.add(new PlateForme(width-24*2, height/2+135, BodyType.STATIC,30,height-(height/2-80)));
+  //plateforme droite
+  plateFormes.add(new PlateForme(width-25*2, height/2+128, BodyType.STATIC, 30, height-(height/2-80)));
+  //Collines
+  collines = new ArrayList<>();
+  //coline à droite
+  collines.add(new Colline(width/2 + 100, height/2+100, new int[]{0, 40, 35, 60, 35, -25, 0, -5}));
+  //coline à gauche
+  collines.add(new Colline(25, height/2+75, new int[]{0, 80, 50, 65, 50, 20, 0, -50}));
+  //lanceur
+  lanceur = new Lanceur(width-20, height-100, 30, 25);
 }
 void draw() {
   // We must always step through time!
   box2d.step();
   background(img);
+  //appel de la fonction a chaque frame pour eviter les effets de saccade sur un appuis prolongé pour le lanceur
+  pull();
   //la surface du flipper
   surface.display();
   //les plateformes
-  for (PlateForme pt : plateFormes){
-    pt.setColor(color(60,98,172));
+  for (PlateForme pt : plateFormes) {
     pt.createBody();
+    //pt.setColor(color(200,0,0));
     pt.display();
   }
   //les flippers
@@ -62,12 +74,58 @@ void draw() {
   for (Balle b : balles) {
     b.display();
   }
+  //coline
+  for ( Colline c : collines) {
+    c.display();
+  }
+  //lanceur
+  lanceur.display();
 }
 void mouseClicked() {
   balles.add(new Balle(mouseX, mouseY));
-  for (Flipper flipper : flippers ){
-    if(flipper.isLeftFlipper){
-      flipper.flip();
+}
+
+//Touche du jeu
+void pull() {
+  //touche pour le lanceur
+  if (keyPressed && key == ' ') {
+    lanceur.tirerLanceur();
+  }
+ 
+}
+void keyPressed() {
+  //touche pour le flipper gauche
+  if (key == 'a') {
+    for (Flipper flipper : flippers ) {
+      if (flipper.isLeftFlipper) {
+        flipper.flip();
+      }
+    }
+  }
+  //touche pour le flipper droit
+  if (key== 'p') {
+    for (Flipper flipper : flippers ) {
+      if (!flipper.isLeftFlipper) {
+        flipper.flip();
+      }
+    }
+  }
+}
+void keyReleased() {
+  //Pour le flipper gauche
+  if (key == 'a') {
+    for (Flipper flipper : flippers ) {
+      if (flipper.isLeftFlipper) {
+        flipper.reverseFlip();
+      }
+    }
+  }
+  //pour le flipper droit
+  if (key== 'p') {
+    for (Flipper flipper : flippers ) {
+      if (!flipper.isLeftFlipper) {
+        flipper.reverseFlip();
+      }
     }
   }
 }

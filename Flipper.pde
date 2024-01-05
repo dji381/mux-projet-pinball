@@ -1,34 +1,23 @@
 public class Flipper {
   boolean isLeftFlipper;
   PlateForme pt;
-  Flipper(int posX, int posY, BodyType bt, float _w, float _h, boolean isLeft ) {
-    pt = new PlateForme(posX, posY, bt, _w, _h);
+  PlateForme base;
+  Flipper(int posX, int posY, float _w, float _h, boolean isLeft ) {
+    pt = new PlateForme(posX, posY, BodyType.DYNAMIC, _w, _h);
+    base = new PlateForme((int)pt.pos.x,(int) pt.pos.y,BodyType.STATIC,1,1);
     this.isLeftFlipper = isLeft;
     createBody();
   }
 
   void createBody() {
     pt.createBody();
-    // Create base
-    PolygonShape baseShape = new PolygonShape();
-    baseShape.setAsBox(1, 1);
-
-    // Define physics body
-    BodyDef baseBodyDef = new BodyDef();
-    baseBodyDef.type = BodyType.STATIC;
-    baseBodyDef.position.set(box2d.coordPixelsToWorld(new Vec2(pt.pos.x, pt.pos.y)));
-    baseBodyDef.setFixedRotation(true);
-
-    // Add body to world
-    Body baseBody = box2d.createBody(baseBodyDef);
-    baseBody.createFixture(baseShape, 1);
-
+    base.createBody();
     RevoluteJointDef rotationJoint = new RevoluteJointDef();
     if (isLeftFlipper) {
-      rotationJoint.initialize(pt.body, baseBody, new Vec2(pt.pos.x-pt.pfW, pt.pos.y));
+      rotationJoint.initialize(pt.body, base.body, new Vec2(pt.pos.x-pt.pfW, pt.pos.y));
     }
     if (!isLeftFlipper) {
-      rotationJoint.initialize(pt.body, baseBody, new Vec2(pt.pos.x+pt.pfW, pt.pos.y));
+      rotationJoint.initialize(pt.body, base.body, new Vec2(pt.pos.x+pt.pfW, pt.pos.y));
     }
     rotationJoint.collideConnected = false;
 
@@ -42,13 +31,23 @@ public class Flipper {
   };
   void flip() {
     if (isLeftFlipper) {
-      pt.body.applyTorque(1000000);
+      pt.body.applyTorque(500000);
     } else {
-      pt.body.applyTorque(1000000*-1);
+      pt.body.applyTorque(500000*-1);
+    }
+  }
+    void reverseFlip() {
+    if (!isLeftFlipper) {
+      pt.body.applyTorque(500000);
+    } else {
+      pt.body.applyTorque(500000*-1);
     }
   }
   void display() {
+    pt.setColor(color(0,0,0));
     pt.display();
+    base.display();
+    
     // les cercle a la base des flippers
 
     float a = pt.body.getAngle();
