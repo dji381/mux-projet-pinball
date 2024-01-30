@@ -4,7 +4,7 @@ abstract class Figure {
   BodyDef bd;
   //position du corps
   Vec2 pos;
-  //the body
+  // body
   Body body;
   //fixture
   FixtureDef fd;
@@ -22,7 +22,7 @@ abstract class Figure {
     //creation de la fixture
     fd = new FixtureDef();
   }
-
+  //methode abstraite
   abstract void display();
   abstract void killBody();
   abstract void createBody();

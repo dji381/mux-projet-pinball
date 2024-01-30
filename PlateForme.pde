@@ -36,7 +36,6 @@ public class PlateForme extends Figure {
     pushMatrix();
     translate(position.x, position.y);
     rotate(-a);
-    //fill(c);
     noStroke();
     rectMode(CENTER);
     rect(0,0,w,h);

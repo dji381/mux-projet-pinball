@@ -6,52 +6,64 @@ public class Balle extends Figure {
   public Balle (int posX, int posY) {
     super(posX, posY, BodyType.DYNAMIC);
     c = color(255,0,0);
-    img = loadImage("pokeball.png");
+    img = loadImage("pokeball-min.png");
     createBody();
     
   }
   void createBody() {
-    w=25;
-    // Setting an arbitrary initial velocity
+    w=20;
+    // Définir une vitesse initiale arbitraire
     body.setLinearVelocity(new Vec2(0, 0));
-    // Setting an arbitrary initial angular velocity
+    // Définition d'une vitesse angulaire initiale arbitraire
     body.setAngularVelocity(-1.2);
-    //the shape
+    //La forme
     balle = new CircleShape();
-    //size of the shape
+    //Taille
     balleW = box2d.scalarPixelsToWorld(w/2);
     balle.setRadius(balleW);
     fd.shape = balle;
-    // The coefficient of friction for the
-    // shape, typically between 0 and 1
+    // Coefficient de  friction
     fd.friction = 0.1;
     fd.restitution = 0.3;
     fd.density = 1.0;
-    // Creates the Fixture and attaches the Shape to the Body object
+    // Crée la Fixture et attache la Shape au Body object
     body.createFixture(fd);
-    //reference to this Particle that we can access later.
+    //reference pour y avoir accés pour le colision
     body.setUserData(this);
   }
   void display() {
-    //get the position of the body
+    //Position du body
     Vec2 position = box2d.getBodyPixelCoord(body);
-    //get the angle
+    //l'angle
     float a = body.getAngle();
 
     pushMatrix();
-    // Using the Vec2 position and float angle to translate and rotate the rectangle
+    //Utilisation de la position Vec2 et de l'angle flottant pour translate et faire pivoter le rectangle
     translate(position.x, position.y);
     rotate(-a);
     image(img,0-w/2,0-w/2,w+1,w+1);
     popMatrix();
   }
   void killBody() {
-    box2d.destroyBody(body);
+    box2d.destroyBody(this.body);
   }
-   void bumpAway(float amount, Vec2 normal)
+  //rebond de la balle lors de collision
+   void bumpAway(Vec2 normal)
   {
     normal.normalize();
-    Vec2 pushForce = normal.mul(-amount);
+    //vecteur dans la direction opposé
+    Vec2 pushForce = normal.mul(-400);
     this.body.applyLinearImpulse(pushForce, this.body.getPosition(), true);
+  }
+  //fonction pour detecter si la balle est hors champ
+  boolean horsChamp(){
+    Vec2 position = box2d.getBodyPixelCoord(body);
+    return position.y>height;
+  }
+  //réinit de la balle
+  Balle reset(){
+    vies--;
+    killBody();
+    return new Balle(width-25, height-150);  
   }
 }

@@ -3,6 +3,7 @@ class Surface {
   float amplitude = 100; // Hauteur 
   float wavelength =width+25; // Longueur d'onde 
   int numPoints = width/2; // Nombre de points 
+  Body body;
   Surface() {
 
     surface = new ArrayList<Vec2>();
@@ -31,7 +32,6 @@ class Surface {
 
 
     for (int i = 0; i < vertices.length; i++) {
-      // Convert each vertex to Box2D World coordinates.
       vertices[i] = box2d.coordPixelsToWorld(surface.get(i));
     }
 
@@ -40,8 +40,9 @@ class Surface {
 
     //fixture
     BodyDef bd = new BodyDef();
-    Body body = box2d.world.createBody(bd);
+    body = box2d.world.createBody(bd);
     body.createFixture(chain, 1);
+    body.setUserData(this);
     
   }
   void display() {
