@@ -26,6 +26,7 @@ DEveloppement
 Ce jeu de pinball Pokémon a été développé en Processing, utilisant spécifiquement le mode Java pour sa réalisation. Pour gérer la physique du jeu, notamment les collisions et les interactions entre la balle et les éléments du flipper, la bibliothèque Box2D a été intégrée et pour le son la bibliothéque minim. Cette approche permet une simulation réaliste et fluide des mouvements de la balle et des réactions des flippers. 
 
 Screenshot du jeu :
+
 ![image](https://github.com/dji381/mux-projet-pinball/assets/94570385/b322f609-8592-4398-bb03-eea7bb5b264a)
 
 
