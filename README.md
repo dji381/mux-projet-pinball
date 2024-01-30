@@ -27,7 +27,8 @@ Ce jeu de pinball Pokémon a été développé en Processing, utilisant spécifi
 
 Screenshot du jeu :
 
-![image](https://github.com/dji381/mux-projet-pinball/assets/94570385/b322f609-8592-4398-bb03-eea7bb5b264a)
+![image](https://github.com/dji381/mux-projet-pinball/assets/94570385/b322f609-8592-4398-bb03-eea7bb5b264a) ![image](https://github.com/dji381/mux-projet-pinball/assets/94570385/a20d241f-bfb8-415e-9fb6-309fa97c8e46)
+
 
 
 
